@@ -60,7 +60,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SampleMapsActivity"
-            android:label="@string/title_activity_sample_maps"></activity>
+            android:label="@string/title_activity_sample_maps" />
     </application>
 
 </manifest>

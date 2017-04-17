@@ -19,5 +19,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_user_m">UserMActivity</string>
     <string name="title_activity_sample_maps">Map</string>
+    <string name="title_activity_fragment_maps">FragmentMapsActivity</string>
 
 </resources>
