@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">TSCDriver</string>
+
+    <string-array name="years">
+        <item>1980</item>
+        <item>1981</item>
+        <item>1982</item>
+    </string-array>
+    <string name="title_activity_driver">DriverActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_home">Map</string>
+    <string name="title_activity_semo_maps">Map</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_user_main">UserMainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_user_m">UserMActivity</string>
+    <string name="title_activity_sample_maps">Map</string>
+
+</resources>

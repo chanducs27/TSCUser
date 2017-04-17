@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.fantasik.tscuser.tscuser.RegisterActivity">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="false"
+        android:id="@+id/hs"
+        android:layout_alignParentStart="false"
+        android:weightSum="100">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/gregister"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight=".5"
+                android:background="@android:color/background_light"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/gplus" />
+
+            <ImageButton
+                android:id="@+id/fregister"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_weight="0.5"
+                android:background="@android:color/background_light"
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/facebook" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                app:srcCompat="@drawable/or"
+                android:id="@+id/imageButton3"
+                android:background="@android:color/background_light"
+                android:scaleType="fitXY"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/tFname"
+                android:layout_weight=".5"
+                android:hint="FIRST NAME"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/tLname"
+                android:layout_weight=".5"
+                android:hint="LAST NAME"
+                android:layout_marginTop="10dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:ems="10"
+                android:id="@+id/tEmail"
+                android:hint="EMAIL"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp" />
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/tphone"
+                android:hint="PHONE"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/tPass"
+                android:hint="PASSWORD"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:gravity="bottom"
+            android:minHeight="220dp">
+
+
+            <Button
+                android:text="NEXT"
+                android:layout_width="wrap_content"
+                android:id="@+id/butNext"
+                android:background="#45494a"
+                android:textColor="@android:color/background_light"
+                android:textStyle="normal|bold"
+                android:textAlignment="center"
+                android:elevation="2dp"
+                style="@android:style/Widget.Material.Button"
+                android:layout_height="40dp"
+                tools:targetApi="lollipop" />
+        </TableRow>
+
+    </TableLayout>
+</RelativeLayout>
