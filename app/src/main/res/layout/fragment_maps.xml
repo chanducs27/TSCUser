@@ -1,9 +1,48 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-<fragment android:id="@+id/map"
+    <fragment android:id="@+id/map"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    class="com.google.android.gms.maps.MapFragment"></fragment>
+    class="com.google.android.gms.maps.MapFragment"
+        tools:layout="@layout/content_user_map" />
 
-    </FrameLayout>
+    <RelativeLayout
+        android:id="@+id/startlocpopup"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:animateLayoutChanges="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@color/purple_light"
+            android:gravity="right|center"
+            android:weightSum="3">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.7"
+                android:fontFamily="sans-serif"
+                android:text="Set Pickup Location"
+                android:textAllCaps="false"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="8sp" />
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                app:srcCompat="@drawable/right_arrow_small" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
