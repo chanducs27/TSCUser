@@ -3,11 +3,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <fragment android:id="@+id/map"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    class="com.google.android.gms.maps.MapFragment"
+    <fragment
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         tools:layout="@layout/content_user_map" />
+
+    <RelativeLayout
+        android:id="@+id/pickuplocSearch"
+        android:layout_width="275dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/cardview_light_background"
+        android:elevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/search" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="PICKUP LOCATION"
+                        android:textColor="@android:color/holo_orange_dark" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </TableLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/markerlayout"
+        android:layout_width="130dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:elevation="5dp">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/map_marker" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/startlocpopup"
@@ -15,12 +78,13 @@
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:animateLayoutChanges="false">
+        android:animateLayoutChanges="false"
+        android:elevation="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
-            android:background="@color/purple_light"
+            android:background="@android:color/black"
             android:gravity="right|center"
             android:weightSum="3">
 
@@ -32,7 +96,7 @@
                 android:fontFamily="sans-serif"
                 android:text="Set Pickup Location"
                 android:textAllCaps="false"
-                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textColor="@android:color/background_light"
                 android:textSize="8sp" />
 
             <ImageView
