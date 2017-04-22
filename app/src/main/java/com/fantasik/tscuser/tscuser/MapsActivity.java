@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -118,9 +119,64 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         MapFragment fragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         fragment.getMapAsync(this);
 
+   pickuplocSearch.setOnTouchListener(new View.OnTouchListener() {
+       @Override
+       public boolean onTouch(View view, MotionEvent motionEvent) {
+           int eid = motionEvent.getAction();
+           switch (eid) {
+               case MotionEvent.ACTION_DOWN:
+               {
+                   pickuplocSearch.setBackgroundColor(Color.GRAY);
+               break;
+               }
+               case MotionEvent.ACTION_UP:
+               {
+                   pickuplocSearch.setBackgroundColor(Color.WHITE);
+                   CallPlacePicker();
+                   break;
+               }
+           }
+           return true;
+       }
+   });
 
+        destinationSearch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int eid = motionEvent.getAction();
+                switch (eid) {
+                    case MotionEvent.ACTION_DOWN:
+                    {
+                        destinationSearch.setBackgroundColor(Color.GRAY);
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    {
+                        destinationSearch.setBackgroundColor(Color.WHITE);
+                        CallPlacePicker();
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
     }
 
+    private void CallPlacePicker()
+    {
+        try {
+            Intent intent =
+                    new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                            .build(getActivity());
+            startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+        } catch (GooglePlayServicesRepairableException e) {
+            // TODO: Handle the error.
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // TODO: Handle the error.
+        }
+    }
+
+    // GPS location change event
     @Override
     public void onLocationChanged(Location location) {
 
@@ -144,7 +200,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = "";
-            for (int i = 0; i <= addresses.get(0).getMaxAddressLineIndex(); i++) {
+            for (int i = 0; i <= 1; i++) {
                 address += addresses.get(0).getAddressLine(i) + ",";
             }
 
@@ -156,7 +212,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             String knownName = addresses.get(0).getFeatureName();
 
             if (address != "")
-                return address + city + "," + state;
+                return address;
             else
                 return city + "," + state;
         } catch (IOException e) {
@@ -239,8 +295,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
 
                 StartPicupAnimation(130);
                 startlocpopup.setVisibility(View.VISIBLE);
-            } else {
-                txtDropAddress.setText(GetAddressfromLocation(latitude, longitude));
             }
         }
     }
@@ -259,8 +313,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
     public void onCameraMoveStarted(int i) {
         if (!isPickupSelected)
             txtPickAddress.setText("Getting Address...");
-        else
-            txtDropAddress.setText("Getting Address...");
     }
     int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
     @OnClick({R.id.startlocpopup, R.id.imgDrop})
@@ -280,16 +332,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             case R.id.imgDrop:
 
 
-                try {
-                    Intent intent =
-                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                    .build(getActivity());
-                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
-                } catch (GooglePlayServicesRepairableException e) {
-                    // TODO: Handle the error.
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    // TODO: Handle the error.
-                }
+
                 break;
         }
     }
@@ -300,7 +343,13 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                Log.i(TAG, "Place: " + place.getName());
+                if (isPickupSelected) {
+                    txtDropAddress.setText(place.getName());
+                    isDropSelected = true;
+                } else {
+                    txtPickAddress.setText(place.getName());
+                    isPickupSelected = true;
+                }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
                 // TODO: Handle the error.

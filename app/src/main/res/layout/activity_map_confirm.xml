@@ -1,0 +1,80 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <fragment
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        tools:layout="@layout/content_user_map"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:id="@+id/finalSearch"
+        android:layout_width="230dp"
+        android:layout_height="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="30dp"
+        android:background="@android:color/white"
+        android:elevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <ImageView
+                android:id="@+id/imgPickup"
+                android:layout_width="35dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="4dp"
+                app:srcCompat="@drawable/routeicon" />
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left">
+
+                    <TextView
+                        android:id="@+id/txtPickup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:text="PICKUP LOCATION"
+                        android:textColor="@android:color/black"
+                        android:textSize="12sp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="left">
+
+                    <TextView
+                        android:id="@+id/txtDrop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left|center"
+                        android:text="Drop Address"
+                        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                        android:textSize="12sp" />
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+
+</RelativeLayout>
