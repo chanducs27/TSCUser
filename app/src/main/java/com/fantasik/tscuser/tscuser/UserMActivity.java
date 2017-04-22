@@ -20,7 +20,7 @@ import com.google.android.gms.common.GoogleApiAvailability;
 
 public class UserMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    FragmentManager fm ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +36,12 @@ public class UserMActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        fm = getFragmentManager();
+        navigationView.getMenu().getItem(0).setChecked(true);
+        if(checkPlayServices()) {
+            fm.beginTransaction().replace(R.id.content_frame, new MapsActivity()).commit();
+        }
     }
 
     @Override
@@ -87,8 +93,6 @@ public class UserMActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        FragmentManager fm = getFragmentManager();
 
         int id = item.getItemId();
 

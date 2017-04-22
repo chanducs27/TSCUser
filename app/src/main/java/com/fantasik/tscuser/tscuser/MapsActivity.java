@@ -346,6 +346,9 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
                 if (isPickupSelected) {
                     txtDropAddress.setText(place.getName());
                     isDropSelected = true;
+                    Intent intent = new Intent(getActivity(), MapConfirmActivity.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 } else {
                     txtPickAddress.setText(place.getName());
                     isPickupSelected = true;

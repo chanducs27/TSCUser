@@ -46,7 +46,8 @@
             android:name=".UserMActivity"
             android:label="@string/title_activity_user_m"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MapConfirmActivity"></activity>
+        <activity android:name=".MapConfirmActivity"
+            android:theme="@style/AppTheme" ></activity>
     </application>
 
 </manifest>
