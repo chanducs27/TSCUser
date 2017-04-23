@@ -200,7 +200,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = "";
-            for (int i = 0; i <= 1; i++) {
+            for (int i = 0; i <= 0; i++) {
                 address += addresses.get(0).getAddressLine(i) + ",";
             }
 
@@ -346,12 +346,27 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
                 if (isPickupSelected) {
                     txtDropAddress.setText(place.getName());
                     isDropSelected = true;
+                    dropLocation = place.getLatLng();
+
+                    Bundle args = new Bundle();
+                    args.putParcelable("from_position", pickupLocation);
+                    args.putParcelable("to_position", dropLocation);
+
                     Intent intent = new Intent(getActivity(), MapConfirmActivity.class);
+                    intent.putExtra("picaddress",txtPickAddress.getText());
+                    intent.putExtra("dropaddress",txtDropAddress.getText());
+                    intent.putExtra("locations",args);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 } else {
                     txtPickAddress.setText(place.getName());
+                    pickupLocation = place.getLatLng();
                     isPickupSelected = true;
+
+                        googleMap.addMarker(new MarkerOptions().position(place.getLatLng()));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(place.getLatLng()));
+                        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
                 }
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
