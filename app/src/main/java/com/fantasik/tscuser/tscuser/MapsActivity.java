@@ -126,7 +126,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
            switch (eid) {
                case MotionEvent.ACTION_DOWN:
                {
-                   pickuplocSearch.setBackgroundColor(Color.GRAY);
+                   pickuplocSearch.setBackgroundColor(Color.parseColor(getString(R.string.lightgraycolor)));
                break;
                }
                case MotionEvent.ACTION_UP:
@@ -147,7 +147,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
                 switch (eid) {
                     case MotionEvent.ACTION_DOWN:
                     {
-                        destinationSearch.setBackgroundColor(Color.GRAY);
+                        destinationSearch.setBackgroundColor(Color.parseColor(getString(R.string.lightgraycolor)));
                         break;
                     }
                     case MotionEvent.ACTION_UP:

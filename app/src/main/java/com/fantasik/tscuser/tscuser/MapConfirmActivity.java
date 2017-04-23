@@ -1,14 +1,14 @@
 package com.fantasik.tscuser.tscuser;
 
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,10 +32,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -51,6 +51,15 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     TextView txtDrop;
 
     LatLng pickupLocation, dropLocation;
+    @BindView(R.id.txtchange)
+    TextView txtchange;
+    @BindView(R.id.frmFairEstimate)
+    LinearLayout frmFairEstimate;
+    @BindView(R.id.frmPromoCoed)
+    LinearLayout frmPromoCoed;
+    @BindView(R.id.butNext)
+    Button butNext;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Confirmation");
@@ -85,8 +94,6 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
 
     }
-
-
 
 
     @Override
@@ -175,6 +182,20 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         return data;
     }
 
+    @OnClick({R.id.txtchange, R.id.frmFairEstimate, R.id.frmPromoCoed, R.id.relMain})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.txtchange:
+                break;
+            case R.id.frmFairEstimate:
+                break;
+            case R.id.frmPromoCoed:
+                break;
+            case R.id.relMain:
+                break;
+        }
+    }
+
     // Fetches data from url passed
     private class FetchUrl extends AsyncTask<String, Void, String> {
 
@@ -220,17 +241,17 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("ParserTask",jsonData[0].toString());
+                Log.d("ParserTask", jsonData[0].toString());
                 DataParser parser = new DataParser();
                 Log.d("ParserTask", parser.toString());
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
-                Log.d("ParserTask","Executing routes");
-                Log.d("ParserTask",routes.toString());
+                Log.d("ParserTask", "Executing routes");
+                Log.d("ParserTask", routes.toString());
 
             } catch (Exception e) {
-                Log.d("ParserTask",e.toString());
+                Log.d("ParserTask", e.toString());
                 e.printStackTrace();
             }
             return routes;
@@ -266,16 +287,15 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                 lineOptions.width(10);
                 lineOptions.color(Color.RED);
 
-                Log.d("onPostExecute","onPostExecute lineoptions decoded");
+                Log.d("onPostExecute", "onPostExecute lineoptions decoded");
 
             }
 
             // Drawing polyline in the Google Map for the i-th route
-            if(lineOptions != null) {
+            if (lineOptions != null) {
                 googleMap.addPolyline(lineOptions);
-            }
-            else {
-                Log.d("onPostExecute","without Polylines drawn");
+            } else {
+                Log.d("onPostExecute", "without Polylines drawn");
             }
         }
     }
