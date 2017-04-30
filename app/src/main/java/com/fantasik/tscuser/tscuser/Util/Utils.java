@@ -8,7 +8,7 @@ import android.util.DisplayMetrics;
  */
 
 public class Utils {
-
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
    /* public static int dpToPx(int dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
@@ -31,3 +31,5 @@ public class Utils {
     }
 
 }
+
+

@@ -256,26 +256,27 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
                             Manifest.permission.ACCESS_FINE_LOCATION},
                     200);
         }
-        googleMap.setMyLocationEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        else {
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        googleMap.setOnCameraIdleListener(this);
-        googleMap.setOnCameraMoveStartedListener(this);
-        googleMap.setOnCameraMoveListener(this);
-        googleMap.setOnCameraMoveCanceledListener(this);
+            googleMap.setOnCameraIdleListener(this);
+            googleMap.setOnCameraMoveStartedListener(this);
+            googleMap.setOnCameraMoveListener(this);
+            googleMap.setOnCameraMoveCanceledListener(this);
 
-        StartPicupAnimation(130);
-        startlocpopup.setVisibility(View.VISIBLE);
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null) {
-            onLocationChanged(location);
+            StartPicupAnimation(130);
+            startlocpopup.setVisibility(View.VISIBLE);
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
+            String bestProvider = locationManager.getBestProvider(criteria, true);
+            Location location = locationManager.getLastKnownLocation(bestProvider);
+            if (location != null) {
+                onLocationChanged(location);
+            }
+            locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
         }
-        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
-
     }
 
 

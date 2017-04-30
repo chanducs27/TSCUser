@@ -6,7 +6,6 @@
         <item name="colorPrimary">@android:color/holo_purple</item>
         <item name="colorPrimaryDark">@android:color/holo_purple</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@android:color/background_light</item>
     </style>
 
     <style name="NoActionBar" parent="@android:style/Theme.Holo.Light">

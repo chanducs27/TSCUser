@@ -39,11 +39,14 @@ public class WelcomeActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnlogin:
-                Intent intent = new Intent(WelcomeActivity.this, UserMActivity.class);
-                startActivity(intent);
+                Intent intent2 = new Intent(WelcomeActivity.this, Login1Activity.class);
+                startActivity(intent2);
                 overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 break;
             case R.id.btnregister:
+                Intent intent = new Intent(WelcomeActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 break;
         }
     }

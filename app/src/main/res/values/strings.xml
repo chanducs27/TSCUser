@@ -22,4 +22,5 @@
     <string name="title_activity_fragment_maps">FragmentMapsActivity</string>
     <string name="title_activity_places_auto_complete">PlacesAutoCompleteActivity</string>
     <string name="lightgraycolor">#f4f4f4</string>
+    <string name="title_activity_change_cash_type">ChangeCashTypeActivity</string>
 </resources>

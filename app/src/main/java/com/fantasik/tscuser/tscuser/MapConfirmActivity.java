@@ -51,6 +51,8 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     TextView txtDrop;
 
     LatLng pickupLocation, dropLocation;
+
+
     @BindView(R.id.txtchange)
     TextView txtchange;
     @BindView(R.id.frmFairEstimate)
@@ -95,6 +97,20 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+
+    @OnClick({R.id.txtchange, R.id.frmFairEstimate, R.id.frmPromoCoed, R.id.relMain})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.txtchange:
+                break;
+            case R.id.frmFairEstimate:
+                break;
+            case R.id.frmPromoCoed:
+                break;
+            case R.id.relMain:
+                break;
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap gogleMap) {
@@ -180,20 +196,6 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
             urlConnection.disconnect();
         }
         return data;
-    }
-
-    @OnClick({R.id.txtchange, R.id.frmFairEstimate, R.id.frmPromoCoed, R.id.relMain})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.txtchange:
-                break;
-            case R.id.frmFairEstimate:
-                break;
-            case R.id.frmPromoCoed:
-                break;
-            case R.id.relMain:
-                break;
-        }
     }
 
     // Fetches data from url passed
