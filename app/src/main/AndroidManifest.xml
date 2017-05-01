@@ -45,8 +45,7 @@
 
         <activity
             android:name=".UserMActivity"
-            android:label="@string/title_activity_user_m"
-         />
+            android:label="@string/title_activity_user_m" />
         <activity
             android:name=".MapConfirmActivity"
             android:theme="@style/AppTheme" />
@@ -54,7 +53,13 @@
             android:name=".ChangeCashTypeActivity"
             android:label="@string/title_activity_change_cash_type"
             android:theme="@style/AppTheme" />
-        <activity android:name=".PaymentModeActivity"  android:theme="@style/AppTheme" ></activity>
+        <activity
+            android:name=".PaymentModeActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ArrivingDriverActivity"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".RateTripActivity"></activity>
     </application>
 
 </manifest>

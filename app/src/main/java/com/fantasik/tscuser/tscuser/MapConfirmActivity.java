@@ -1,8 +1,13 @@
 package com.fantasik.tscuser.tscuser;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,7 +17,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
 import com.fantasik.tscuser.tscuser.Util.DataParser;
+import com.fantasik.tscuser.tscuser.Util.DriverDetails;
+import com.fantasik.tscuser.tscuser.Util.GsonRequest;
+import com.fantasik.tscuser.tscuser.Util.RideDetails;
+import com.fantasik.tscuser.tscuser.Util.UserDetails;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -21,6 +35,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -38,8 +53,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyCallback {
+import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
+public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyCallback {
+    Handler handlerDriverAccept;
     GoogleMap googleMap;
 
     Unbinder unbinder;
@@ -61,12 +78,12 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     LinearLayout frmPromoCoed;
     @BindView(R.id.butNext)
     Button butNext;
-
+    ProgressDialog pdWaitingdriver = null;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Confirmation");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        handlerDriverAccept = new Handler();
         setContentView(R.layout.activity_map_confirm);
         ButterKnife.bind(this);
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
@@ -98,7 +115,28 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    @OnClick({R.id.txtchange, R.id.frmFairEstimate, R.id.frmPromoCoed, R.id.relMain})
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+       super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
+    @OnClick({R.id.txtchange, R.id.frmFairEstimate, R.id.frmPromoCoed, R.id.relMain, R.id.butNext})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.txtchange:
@@ -109,7 +147,119 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                 break;
             case R.id.relMain:
                 break;
+            case R.id.butNext:
+                final ProgressDialog pd = new ProgressDialog(MapConfirmActivity.this);
+                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                pd.setMessage("Loading.........");
+                pd.setCancelable(false);
+                pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD4D9D0")));
+                pd.setIndeterminate(true);
+                pd.show();
+                SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                String url = "http://10.0.2.2:8076/Service1.svc/InsertRouteDetailsAfterUserRequest";
+                final JSONObject GH =new JSONObject();
+                try {
+                    GH.put("userid",prefs.getString("userid", ""));
+                    GH.put("startlat", String.format("%.6f", pickupLocation.latitude));
+                    GH.put("startlng", String.format("%.6f", pickupLocation.longitude));
+                    GH.put("endlat", String.format("%.6f", dropLocation.latitude));
+                    GH.put("endlng", String.format("%.6f", dropLocation.longitude));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                GsonRequest<RideDetails> getRequest = new GsonRequest<RideDetails>(Request.Method.POST, url,RideDetails.class, null, new Response.Listener<RideDetails>() {
+                    @Override
+                    public void onResponse(RideDetails response)
+                    {
+                        pd.dismiss();
+                        if(response != null) {
+                            RideDetails dd = response;
+
+
+                            SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                            editor.putString("rideid", dd.rideid);
+                            editor.putString("routeid", dd.routeid);
+                            editor.apply();
+                            pdWaitingdriver = new ProgressDialog(MapConfirmActivity.this);
+                            pdWaitingdriver.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                            pdWaitingdriver.setMessage("Waiting for driver Conftimation....");
+                            pdWaitingdriver.setCancelable(false);
+                            pdWaitingdriver.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD4D9D0")));
+                            pdWaitingdriver.setIndeterminate(true);
+                            pdWaitingdriver.show();
+                            scheduleGetAcceptedDriver();
+
+                        }
+                    }
+                }, new com.android.volley.Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        pd.dismiss();
+                        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                        editor.putString("rideid", "");
+                        editor.putString("routeid", "");
+                        editor.apply();
+                    }
+                }, GH);
+
+                getRequest.setShouldCache(false);
+                requestQueue.add(getRequest);
+                break;
         }
+    }
+
+    private final int FIVE_SECONDS = 5000;
+    public void scheduleGetAcceptedDriver() {
+        handlerDriverAccept.postDelayed(new Runnable() {
+            public void run() {
+                GetAcceptedDriver();          // this method will contain your almost-finished HTTP calls
+                handlerDriverAccept.postDelayed(this, FIVE_SECONDS);
+            }
+        }, FIVE_SECONDS);
+    }
+
+    private void GetAcceptedDriver() {
+
+        final SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://10.0.2.2:8076/Service1.svc/GetDriverDetailsWhoAcceptedRequest";
+        final JSONObject GH = new JSONObject();
+        try {
+            GH.put("rideid", prefs.getString("rideid", ""));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        GsonRequest<DriverDetails> getRequest = new GsonRequest<DriverDetails>(Request.Method.POST, url, DriverDetails.class, null, new Response.Listener<DriverDetails>() {
+            @Override
+            public void onResponse(DriverDetails response) {
+                if(response != null) {
+                    pdWaitingdriver.dismiss();
+                    handlerDriverAccept.removeCallbacksAndMessages(null);
+
+                    Intent intent = new Intent(MapConfirmActivity.this, ArrivingDriverActivity.class);
+                    intent.putExtra("startlat", String.format("%.6f", pickupLocation.latitude));
+                    intent.putExtra("startlng", String.format("%.6f", pickupLocation.longitude));
+                    intent.putExtra("driverid", response.driverid);
+                    intent.putExtra("dmobile", response.mobile);
+                    intent.putExtra("dname", response.name);
+                    intent.putExtra("rideid", prefs.getString("rideid", ""));
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                }
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pdWaitingdriver.dismiss();
+
+            }
+        }, GH);
+
+        getRequest.setShouldCache(false);
+        requestQueue.add(getRequest);
     }
 
     @Override

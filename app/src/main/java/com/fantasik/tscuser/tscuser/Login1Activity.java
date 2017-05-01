@@ -106,13 +106,10 @@ public class Login1Activity extends AppCompatActivity {
                     }
                 }, new com.android.volley.Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
+                    public void onErrorResponse(VolleyError error) {
                         pd.dismiss();
                         SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-
-                        editor.putString("username", "");
-                        editor.putString("pass", "");
+                        editor.clear();
 
                         editor.apply();
                     }

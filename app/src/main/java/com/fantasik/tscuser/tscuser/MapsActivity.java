@@ -4,8 +4,11 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -15,6 +18,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,6 +30,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.fantasik.tscuser.tscuser.Util.Driverloc;
+import com.fantasik.tscuser.tscuser.Util.GsonRequest;
 import com.fantasik.tscuser.tscuser.Util.ResizeWidthAnimation;
 import com.fantasik.tscuser.tscuser.Util.Utils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -37,8 +48,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.List;
@@ -53,6 +68,8 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.LOCATION_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
+import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class MapsActivity extends Fragment implements OnMapReadyCallback, LocationListener, GoogleMap.OnCameraMoveStartedListener,
         GoogleMap.OnCameraMoveListener,
@@ -298,6 +315,61 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
                 startlocpopup.setVisibility(View.VISIBLE);
             }
         }
+
+        GetNearbyVehicles(latitude, longitude );
+
+    }
+
+    private void GetNearbyVehicles(double latitude, double longitude) {
+
+        Driverloc[] locs = null;
+        RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
+        String url = "http://10.0.2.2:8076/Service1.svc/GetNearbyDriverloc";
+        final SharedPreferences editorread = this.getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+
+        final JSONObject GH =new JSONObject();
+        try {
+            GH.put("userid",editorread.getString("userid", ""));
+            GH.put("userlat", String.format("%.6f", latitude));
+            GH.put("userlng", String.format("%.6f", longitude));
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        googleMap.clear();
+        GsonRequest<Driverloc[]> getRequest = new GsonRequest<Driverloc[]>(Request.Method.POST, url,Driverloc[].class, null, new Response.Listener<Driverloc[]>() {
+            @Override
+            public void onResponse(Driverloc[] response)
+            {
+
+                Driverloc[] ghk = response;
+                for (int i=0;i<ghk.length;i++)
+                {
+                    int height = 100;
+                    int width = 100;
+                    BitmapDrawable bitmapdraw=(BitmapDrawable) ResourcesCompat.getDrawable(getResources(), R.drawable.car_top_view, null);
+                    if(bitmapdraw != null) {
+                        Bitmap b = bitmapdraw.getBitmap();
+                        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+                        googleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(Double.parseDouble(ghk[i].lat), Double.parseDouble(ghk[i].lng)))
+                                .icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                    }
+                }
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+
+            }
+        }, GH);
+
+        getRequest.setShouldCache(false);
+        requestQueue.add(getRequest);
     }
 
     @Override
