@@ -32,7 +32,7 @@ public class UserMActivity extends AppCompatActivity
         setContentView(R.layout.activity_user_m);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        setTitle("TSCCAB");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

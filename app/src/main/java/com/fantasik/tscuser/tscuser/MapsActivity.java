@@ -217,8 +217,12 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         try {
             addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = "";
-            for (int i = 0; i <= 0; i++) {
-                address += addresses.get(0).getAddressLine(i) + ",";
+               address += addresses.get(0).getAddressLine(0);
+            if(addresses.get(0).getMaxAddressLineIndex() > 1)
+            {
+                for (int i = 0; i <= 1; i++) {
+                    address += addresses.get(0).getAddressLine(i) + " ";
+                }
             }
 
             //  String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
@@ -228,7 +232,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             String postalCode = addresses.get(0).getPostalCode();
             String knownName = addresses.get(0).getFeatureName();
 
-            if (address != "")
+            if (!address.equals(""))
                 return address;
             else
                 return city + "," + state;
@@ -277,6 +281,13 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             googleMap.setMyLocationEnabled(true);
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+            MapFragment fragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            View locationButton = ((View) fragment.getView().findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+            RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+            rlp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+            rlp.setMargins(0, 0, 30, 30);
 
             googleMap.setOnCameraIdleListener(this);
             googleMap.setOnCameraMoveStartedListener(this);

@@ -24,8 +24,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".WelcomeActivity" />
-        <activity android:name=".Login1Activity" />
-        <activity android:name=".ForgetPassActivity" />
+        <activity
+            android:name=".Login1Activity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ForgetPassActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".RegisterActivity"
             android:label="@string/title_activity_register"
@@ -56,10 +60,23 @@
         <activity
             android:name=".PaymentModeActivity"
             android:theme="@style/AppTheme" />
+
         <activity
             android:name=".ArrivingDriverActivity"
+            android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.fantasik.tscuser.tscuser.MapConfirmActivity" />
+    </activity>
+        <activity
+            android:name=".RateTripActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".RateTripActivity"></activity>
+        <activity android:name=".FairEstimateActivity"  android:theme="@style/AppTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.MapConfirmActivity" />
+
+        </activity>
     </application>
 
 </manifest>

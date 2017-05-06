@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -79,6 +82,9 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     @BindView(R.id.butNext)
     Button butNext;
     ProgressDialog pdWaitingdriver = null;
+
+    float totaldistanceinkm = 0.0f;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Confirmation");
@@ -112,6 +118,17 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         });
 
 
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
@@ -142,8 +159,10 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
             case R.id.txtchange:
                 break;
             case R.id.frmFairEstimate:
+
                 break;
             case R.id.frmPromoCoed:
+
                 break;
             case R.id.relMain:
                 break;
@@ -269,7 +288,6 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         googleMap.getUiSettings().setZoomGesturesEnabled(true);
         // Getting URL to the Google Directions API
         String url = getUrl(pickupLocation, dropLocation);
-        Log.d("onMapClick", url.toString());
         FetchUrl FetchUrl = new FetchUrl();
 
         // Start downloading json data from Google Directions API
@@ -280,6 +298,34 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         //move map camera
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(pickupLocation));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+        frmFairEstimate.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int eid = motionEvent.getAction();
+                switch (eid) {
+                    case MotionEvent.ACTION_DOWN:
+                    {
+                        frmFairEstimate.setBackgroundColor(Color.parseColor(getString(R.string.lightgraycolor)));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP:
+                    {
+                        frmFairEstimate.setBackgroundColor(Color.WHITE);
+                        Intent intent = new Intent(getBaseContext(), FairEstimateActivity.class);
+                        intent.putExtra("fromaddr", getIntent().getExtras().getString("picaddress"));
+                        intent.putExtra("toaddr", getIntent().getExtras().getString("dropaddress"));
+                        intent.putExtra("totaldist", String.valueOf(Math.round(totaldistanceinkm * 100.0) / 100.0));
+                        intent.putExtra("totalcost", String.valueOf(Math.round(totaldistanceinkm * 10 * 100.0) / 100.0));
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
     }
 
     private String getUrl(LatLng origin, LatLng dest) {
@@ -409,11 +455,13 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
             return routes;
         }
 
+        LatLng prevloc = null , newloc = null;
         // Executes in UI thread, after the parsing process
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points;
             PolylineOptions lineOptions = null;
+
 
             // Traversing through all the routes
             for (int i = 0; i < result.size(); i++) {
@@ -427,17 +475,36 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
+                    if(newloc != null)
+                    {
+                        prevloc = newloc;
+                    }
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
                     LatLng position = new LatLng(lat, lng);
+                    newloc = position;
 
-                    points.add(position);
+                    if(prevloc != null) {
+                        Location crntLocation = new Location("crntlocation");
+                        crntLocation.setLatitude(prevloc.latitude);
+                        crntLocation.setLongitude(prevloc.longitude);
+
+                        Location newLocation = new Location("newlocation");
+                        newLocation.setLatitude(newloc.latitude);
+                        newLocation.setLongitude(newloc.longitude);
+
+                        totaldistanceinkm += crntLocation.distanceTo(newLocation);
+                        points.add(position);
+                    }
+
                 }
+
+                totaldistanceinkm = totaldistanceinkm/ 1000.0f;
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
                 lineOptions.width(10);
-                lineOptions.color(Color.RED);
+                lineOptions.color(Color.BLUE);
 
                 Log.d("onPostExecute", "onPostExecute lineoptions decoded");
 

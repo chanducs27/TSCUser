@@ -54,11 +54,11 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
         setContentView(R.layout.activity_arriving_driver);
 
         setTitle("Driver Arriving");
-      //  getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
         handlerDriverLocation = new Handler();
-        scheduleGetDriverLocation();
-        scheduleCheckDriverStartConfirm ();
+ //       scheduleGetDriverLocation();
+   //     scheduleCheckDriverStartConfirm ();
          startlat = Double.parseDouble(getIntent().getStringExtra("startlat"));
          startlng = Double.parseDouble( getIntent().getStringExtra("startlng"));
          driverid = getIntent().getStringExtra("driverid");
