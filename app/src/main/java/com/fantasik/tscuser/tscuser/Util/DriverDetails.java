@@ -12,5 +12,5 @@ public class DriverDetails
     public String vehtypeid;
     public String vehyear;
     public String vehcolor;
-    public byte[] imgdriver;
+    public String imgdriver;
 }

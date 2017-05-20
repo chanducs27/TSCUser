@@ -130,6 +130,8 @@ public class PaymentModeActivity extends AppCompatActivity {
                     GH.put("phone",editorread.getString("phone", ""));
                     GH.put("pass",editorread.getString("passw", ""));
 
+                    GH.put("filenamewithext", "");
+                    GH.put("profilebytes", editorread.getString("profileimage", ""));
 
                 } catch (JSONException e) {
                     e.printStackTrace();

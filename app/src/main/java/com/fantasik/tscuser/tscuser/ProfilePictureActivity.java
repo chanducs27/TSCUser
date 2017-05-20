@@ -99,7 +99,7 @@ public class ProfilePictureActivity extends AppCompatActivity {
                 editor.putString("profileimage", Base64.encodeToString(profileimage, Base64.DEFAULT));
                 editor.apply();
 
-                Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Cropping successful", Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
             }
@@ -119,6 +119,7 @@ public class ProfilePictureActivity extends AppCompatActivity {
 
     @OnClick(R.id.butNext)
     public void onViewClicked() {
+
 
         //  String saveThis = Base64.encodeToString(array, Base64.DEFAULT);
         //
