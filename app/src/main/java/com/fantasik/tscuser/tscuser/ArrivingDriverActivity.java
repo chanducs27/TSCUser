@@ -331,7 +331,7 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
         if (location != null) {
             onLocationChanged(location);
         }
-        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
+        locationManager.requestLocationUpdates(bestProvider, 5000, 0, this);
 
         MarkerOptions startLocMarker = new MarkerOptions();
         startLocMarker.position(new LatLng(startlat, startlng));
