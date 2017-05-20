@@ -19,7 +19,8 @@
         android:layout_marginLeft="70dp"
         android:layout_marginTop="30dp"
         android:background="@android:color/white"
-        android:elevation="7dp">
+        android:elevation="7dp"
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,8 +127,6 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight=".7"
                         android:text="Change"
-
-                        android:textAlignment="viewEnd"
                         android:textSize="10sp" />
                 </TableRow>
 
@@ -211,6 +210,8 @@
             android:textStyle="normal|bold"
             tools:targetApi="lollipop" />
     </RelativeLayout>
+
+
 
 
 </RelativeLayout>

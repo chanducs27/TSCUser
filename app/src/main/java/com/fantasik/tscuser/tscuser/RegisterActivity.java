@@ -69,19 +69,42 @@ public class RegisterActivity extends AppCompatActivity {
                 break;
             case R.id.butNext:
 
-                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                if(isValidText()) {
 
-                editor.putString("fname", tFname.getText().toString());
-                editor.putString("lname", tLname.getText().toString());
-                editor.putString("email", tEmail.getText().toString());
-                editor.putString("phone", tphone.getText().toString());
-                editor.putString("passw", tPass.getText().toString());
-                editor.apply();
+                    SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
 
-                Intent intent = new Intent(RegisterActivity.this, PaymentModeActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
-                break;
+                    editor.putString("fname", tFname.getText().toString());
+                    editor.putString("lname", tLname.getText().toString());
+                    editor.putString("email", tEmail.getText().toString());
+                    editor.putString("phone", tphone.getText().toString());
+                    editor.putString("passw", tPass.getText().toString());
+                    editor.apply();
+
+                    Intent intent = new Intent(RegisterActivity.this, PaymentModeActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                }
+                 break;
         }
+    }
+
+    private boolean isValidText() {
+        if(tFname.getText().toString().trim().equals("")) {
+            tFname.setError("This shouldn't be empty");
+            return  false;
+        }
+        if(tEmail.getText().toString().trim().equals("")) {
+            tEmail.setError("This shouldn't be empty");
+            return  false;
+        }
+        if(tPass.getText().toString().trim().equals("")) {
+            tPass.setError("This shouldn't be empty");
+            return  false;
+        }
+        if(tphone.getText().toString().trim().equals("")) {
+            tphone.setError("This shouldn't be empty");
+            return  false;
+        }
+        return true;
     }
 }

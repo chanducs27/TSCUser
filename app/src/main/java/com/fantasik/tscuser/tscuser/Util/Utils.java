@@ -9,7 +9,31 @@ import android.util.DisplayMetrics;
 
 public class Utils {
     public static final String MY_PREFS_NAME = "MyPrefsFile";
-   /* public static int dpToPx(int dp)
+    public static final String Base_URL = "http://chanducs2727.cloudapp.net/Service1.svc";
+
+
+    public static final VehicleTypeDetails VehType_Mini =new VehicleTypeDetails("Mini", 1, 2);
+    public static final VehicleTypeDetails VehType_Micro =new VehicleTypeDetails("Mini", 2, 4);
+    public static final VehicleTypeDetails VehType_Sedan =new VehicleTypeDetails("Sedan", 3, 6);
+
+    public static String GetVehicleTypeName(String id)
+    {
+       if(id.equals("1"))
+    {
+        return VehType_Mini.vehtypename;
+    }
+        if(id.equals("2"))
+        {
+            return VehType_Micro.vehtypename;
+        }
+        if(id.equals("3"))
+        {
+            return VehType_Sedan.vehtypename;
+        }
+        return "";
+    }
+    // public static final String Base_URL = "http://chanducs27.cloudapp.net/Service1.svc";
+    /* public static int dpToPx(int dp)
     {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
@@ -31,5 +55,4 @@ public class Utils {
     }
 
 }
-
 

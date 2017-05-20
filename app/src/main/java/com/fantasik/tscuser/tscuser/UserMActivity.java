@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.fantasik.tscuser.tscuser.Util.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -26,6 +27,8 @@ public class UserMActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     FragmentManager fm ;
     SharedPreferences prefs;
+
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +36,8 @@ public class UserMActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("TSCCAB");
+
+        session = new SessionManager(getApplicationContext());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -107,19 +112,12 @@ public class UserMActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             if(checkPlayServices()) {
                 fm.beginTransaction().replace(R.id.content_frame, new MapsActivity()).commit();
             }
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else  if (id == R.id.nav_logout) {
+            session.logoutUser();
 
         }
 

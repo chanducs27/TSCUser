@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TSCDriver</string>
+    <string name="app_name">TSCCab User</string>
 
     <string-array name="years">
         <item>1980</item>

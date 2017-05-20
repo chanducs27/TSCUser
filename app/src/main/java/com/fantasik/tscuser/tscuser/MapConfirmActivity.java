@@ -1,5 +1,6 @@
 package com.fantasik.tscuser.tscuser;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -29,7 +31,6 @@ import com.fantasik.tscuser.tscuser.Util.DataParser;
 import com.fantasik.tscuser.tscuser.Util.DriverDetails;
 import com.fantasik.tscuser.tscuser.Util.GsonRequest;
 import com.fantasik.tscuser.tscuser.Util.RideDetails;
-import com.fantasik.tscuser.tscuser.Util.UserDetails;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -56,6 +57,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
+import static com.fantasik.tscuser.tscuser.Util.Utils.GetVehicleTypeName;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -84,6 +87,10 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     ProgressDialog pdWaitingdriver = null;
 
     float totaldistanceinkm = 0.0f;
+    double totaldist = 0, totalcost = 0;
+    String promocode = "";
+    String mode = "Cash";
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,8 +125,8 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         });
 
 
-
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -144,7 +151,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     protected void onStop() {
-       super.onStop();
+        super.onStop();
     }
 
     @Override
@@ -152,10 +159,11 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         super.onDestroy();
     }
 
-
+    Dialog dlg;
     @OnClick({R.id.txtchange, R.id.frmFairEstimate, R.id.frmPromoCoed, R.id.relMain, R.id.butNext})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+
             case R.id.txtchange:
                 break;
             case R.id.frmFairEstimate:
@@ -176,24 +184,28 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                 pd.show();
                 SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
                 RequestQueue requestQueue = Volley.newRequestQueue(this);
-                String url = "http://10.0.2.2:8076/Service1.svc/InsertRouteDetailsAfterUserRequest";
-                final JSONObject GH =new JSONObject();
+                String url = Base_URL + "/InsertRouteDetailsAfterUserRequest";
+                final JSONObject GH = new JSONObject();
                 try {
-                    GH.put("userid",prefs.getString("userid", ""));
+                    GH.put("userid", prefs.getString("userid", ""));
                     GH.put("startlat", String.format("%.6f", pickupLocation.latitude));
                     GH.put("startlng", String.format("%.6f", pickupLocation.longitude));
                     GH.put("endlat", String.format("%.6f", dropLocation.latitude));
                     GH.put("endlng", String.format("%.6f", dropLocation.longitude));
+
+                    GH.put("fare", String.valueOf(totalcost));
+                    GH.put("promocode", String.valueOf(promocode));
+                    GH.put("distance", String.valueOf(totaldist));
+                    GH.put("mode", String.valueOf(mode));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                GsonRequest<RideDetails> getRequest = new GsonRequest<RideDetails>(Request.Method.POST, url,RideDetails.class, null, new Response.Listener<RideDetails>() {
+                GsonRequest<RideDetails> getRequest = new GsonRequest<RideDetails>(Request.Method.POST, url, RideDetails.class, null, new Response.Listener<RideDetails>() {
                     @Override
-                    public void onResponse(RideDetails response)
-                    {
+                    public void onResponse(RideDetails response) {
                         pd.dismiss();
-                        if(response != null) {
+                        if (response != null) {
                             RideDetails dd = response;
 
 
@@ -212,7 +224,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
                         }
                     }
-                }, new com.android.volley.Response.ErrorListener() {
+                }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         pd.dismiss();
@@ -230,6 +242,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private final int FIVE_SECONDS = 5000;
+
     public void scheduleGetAcceptedDriver() {
         handlerDriverAccept.postDelayed(new Runnable() {
             public void run() {
@@ -243,7 +256,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
         final SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "http://10.0.2.2:8076/Service1.svc/GetDriverDetailsWhoAcceptedRequest";
+        String url = Base_URL + "/GetDriverDetailsWhoAcceptedRequest";
         final JSONObject GH = new JSONObject();
         try {
             GH.put("rideid", prefs.getString("rideid", ""));
@@ -254,22 +267,44 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         GsonRequest<DriverDetails> getRequest = new GsonRequest<DriverDetails>(Request.Method.POST, url, DriverDetails.class, null, new Response.Listener<DriverDetails>() {
             @Override
             public void onResponse(DriverDetails response) {
-                if(response != null) {
+                if (response != null) {
+                    final DriverDetails dd = response;
                     pdWaitingdriver.dismiss();
                     handlerDriverAccept.removeCallbacksAndMessages(null);
 
-                    Intent intent = new Intent(MapConfirmActivity.this, ArrivingDriverActivity.class);
-                    intent.putExtra("startlat", String.format("%.6f", pickupLocation.latitude));
-                    intent.putExtra("startlng", String.format("%.6f", pickupLocation.longitude));
-                    intent.putExtra("driverid", response.driverid);
-                    intent.putExtra("dmobile", response.mobile);
-                    intent.putExtra("dname", response.name);
-                    intent.putExtra("rideid", prefs.getString("rideid", ""));
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                    final Dialog dialog = new Dialog(MapConfirmActivity.this);
+                    dialog.setContentView(R.layout.booking_confirm);
+
+                    //  TextView text = (TextView) dialog.findViewById(R.id.text);
+                    //  text.setText("Android custom dialog example!");
+
+                    TextView txtAccept = (TextView) dialog.findViewById(R.id.btnDone);
+                    // if button is clicked, close the custom dialog
+                    txtAccept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(MapConfirmActivity.this, ArrivingDriverActivity.class);
+                            intent.putExtra("startlat", String.format("%.6f", pickupLocation.latitude));
+                            intent.putExtra("startlng", String.format("%.6f", pickupLocation.longitude));
+                            intent.putExtra("driverid", dd.driverid);
+                            intent.putExtra("dmobile", dd.mobile);
+                            intent.putExtra("dname", dd.name);
+                            intent.putExtra("vehdetails", GetVehicleTypeName(dd.vehtypeid) + "-" + dd.vehbrand + "-" + dd.vehcolor + "-" + dd.vehplateno);
+                            intent.putExtra("rideid", prefs.getString("rideid", ""));
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+
+                        }
+                    });
+
+
+                    dialog.show();
                 }
+
+
             }
-        }, new com.android.volley.Response.ErrorListener() {
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 pdWaitingdriver.dismiss();
@@ -304,22 +339,66 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 int eid = motionEvent.getAction();
                 switch (eid) {
-                    case MotionEvent.ACTION_DOWN:
-                    {
+                    case MotionEvent.ACTION_DOWN: {
                         frmFairEstimate.setBackgroundColor(Color.parseColor(getString(R.string.lightgraycolor)));
                         break;
                     }
-                    case MotionEvent.ACTION_UP:
-                    {
+                    case MotionEvent.ACTION_UP: {
                         frmFairEstimate.setBackgroundColor(Color.WHITE);
                         Intent intent = new Intent(getBaseContext(), FairEstimateActivity.class);
                         intent.putExtra("fromaddr", getIntent().getExtras().getString("picaddress"));
                         intent.putExtra("toaddr", getIntent().getExtras().getString("dropaddress"));
-                        intent.putExtra("totaldist", String.valueOf(Math.round(totaldistanceinkm * 100.0) / 100.0));
-                        intent.putExtra("totalcost", String.valueOf(Math.round(totaldistanceinkm * 10 * 100.0) / 100.0));
+                        intent.putExtra("totaldist", String.valueOf(totaldist));
+                        intent.putExtra("totalcost", String.valueOf(totalcost));
                         startActivity(intent);
                         overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
+                        break;
+                    }
+                }
+                return true;
+            }
+        });
+
+        frmPromoCoed.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                int eid = motionEvent.getAction();
+                switch (eid) {
+                    case MotionEvent.ACTION_DOWN: {
+                        frmPromoCoed.setBackgroundColor(Color.parseColor(getString(R.string.lightgraycolor)));
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        frmPromoCoed.setBackgroundColor(Color.WHITE);
+                        dlg = new Dialog(MapConfirmActivity.this);
+                        dlg.setContentView(R.layout.rel_promocode);
+
+                        TextView txtCancel = (TextView) dlg.findViewById(R.id.btnCancel_promo);
+                        // if button is clicked, close the custom dialog
+                        txtCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                dlg.dismiss();
+
+                            }
+                        });
+
+
+                        TextView txtApply = (TextView) dlg.findViewById(R.id.btnApply_promo);
+                        // if button is clicked, close the custom dialog
+                        txtApply.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                EditText txtPromo = (EditText) dlg.findViewById(R.id.txtPromo);
+                                promocode = txtPromo.getText().toString();
+                                dlg.dismiss();
+
+                            }
+                        });
+
+                        dlg.show();
                         break;
                     }
                 }
@@ -394,6 +473,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
         return data;
     }
 
+
     // Fetches data from url passed
     private class FetchUrl extends AsyncTask<String, Void, String> {
 
@@ -455,7 +535,8 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
             return routes;
         }
 
-        LatLng prevloc = null , newloc = null;
+        LatLng prevloc = null, newloc = null;
+
         // Executes in UI thread, after the parsing process
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
@@ -475,8 +556,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                 for (int j = 0; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
-                    if(newloc != null)
-                    {
+                    if (newloc != null) {
                         prevloc = newloc;
                     }
                     double lat = Double.parseDouble(point.get("lat"));
@@ -484,7 +564,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                     LatLng position = new LatLng(lat, lng);
                     newloc = position;
 
-                    if(prevloc != null) {
+                    if (prevloc != null) {
                         Location crntLocation = new Location("crntlocation");
                         crntLocation.setLatitude(prevloc.latitude);
                         crntLocation.setLongitude(prevloc.longitude);
@@ -499,7 +579,9 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
 
                 }
 
-                totaldistanceinkm = totaldistanceinkm/ 1000.0f;
+                totaldistanceinkm = totaldistanceinkm / 1000.0f;
+                totaldist = Math.round(totaldistanceinkm * 100.0) / 100.0;
+                totalcost = Math.round(totaldistanceinkm * 10 * 100.0) / 100.0;
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);

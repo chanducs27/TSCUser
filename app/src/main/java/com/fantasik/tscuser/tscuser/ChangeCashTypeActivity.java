@@ -1,5 +1,6 @@
 package com.fantasik.tscuser.tscuser;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class ChangeCashTypeActivity extends AppCompatActivity {
 
@@ -40,10 +43,18 @@ public class ChangeCashTypeActivity extends AppCompatActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.crdDebit:
+                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putString("mode", "Debit");
+                editor.apply();
+
                 break;
             case R.id.crdCash:
+                SharedPreferences.Editor editor2 = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor2.putString("mode", "Cash");
+                editor2.apply();
                 break;
             case R.id.butNext:
+                finish();
                 break;
         }
     }

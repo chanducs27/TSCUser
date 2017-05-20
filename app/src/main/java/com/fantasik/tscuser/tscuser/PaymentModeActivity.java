@@ -22,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.fantasik.tscuser.tscuser.Util.GsonRequest;
+import com.fantasik.tscuser.tscuser.Util.SessionManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class PaymentModeActivity extends AppCompatActivity {
@@ -47,6 +49,8 @@ public class PaymentModeActivity extends AppCompatActivity {
 
     String userid = "";
     boolean isDebit, isCash;
+
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,8 @@ public class PaymentModeActivity extends AppCompatActivity {
         isCash = false;
         imgCash.setImageResource(android.R.color.transparent);
         imgDebit.setImageResource(R.drawable.ok);
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -112,7 +118,7 @@ public class PaymentModeActivity extends AppCompatActivity {
 
 
                 RequestQueue requestQueue = Volley.newRequestQueue(this);
-                String url = "http://10.0.2.2:8076/Service1.svc/RegisterUser";
+                String url = Base_URL + "/RegisterUser";
 
                final SharedPreferences editorread = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
 
@@ -133,15 +139,18 @@ public class PaymentModeActivity extends AppCompatActivity {
                     public void onResponse(String response)
                     {
                         pd.dismiss();
-                        if(response != "-1") {
+                        if(response != null && !response.equals("-1")) {
                             userid = response;
 
                             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                             editor.putString("userid", userid);
+                            editor.putString("name", editorread.getString("fname", "") + editorread.getString("lname", ""));
                             editor.putString("username", editorread.getString("email", ""));
                             editor.putString("pass", editorread.getString("passw", ""));
 
                             editor.apply();
+
+                            session.createLoginSession(userid, editorread.getString("email", ""));
 
                             Intent intent = new Intent(PaymentModeActivity.this, UserMActivity.class);
                             startActivity(intent);

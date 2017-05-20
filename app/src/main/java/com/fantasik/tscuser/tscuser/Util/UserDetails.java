@@ -7,4 +7,5 @@ public class UserDetails
     public String mobile;
     public String username;
     public String pass;
+    public byte[] imguser;
 }

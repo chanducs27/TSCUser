@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.fantasik.tscuser.tscuser.Util.GsonRequest;
 import com.fantasik.tscuser.tscuser.Util.SPreferences;
+import com.fantasik.tscuser.tscuser.Util.SessionManager;
 import com.fantasik.tscuser.tscuser.Util.UserDetails;
 
 import org.json.JSONException;
@@ -29,6 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class Login1Activity extends AppCompatActivity {
@@ -46,12 +48,18 @@ public class Login1Activity extends AppCompatActivity {
     @BindView(R.id.txtForgetPass)
     TextView txtForgetPass;
 
+    SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTitle("Login");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login1);
         ButterKnife.bind(this);
         SPreferences.ClearPreferences(this);
+
+        // Session class instance
+        session = new SessionManager(getApplicationContext());
     }
 
     @OnClick({R.id.glogin, R.id.flogin, R.id.butNext})
@@ -71,7 +79,7 @@ public class Login1Activity extends AppCompatActivity {
                 pd.show();
 
                 RequestQueue requestQueue = Volley.newRequestQueue(this);
-                String url = "http://10.0.2.2:8076/Service1.svc/userlogin";
+                String url = Base_URL + "/userlogin";
                 final JSONObject GH =new JSONObject();
                 try {
                     GH.put("username",txtusername.getText());
@@ -98,6 +106,8 @@ public class Login1Activity extends AppCompatActivity {
                             editor.putString("pass", String.valueOf(tPass.getText()));
 
                             editor.apply();
+
+                            session.createLoginSession(dd.userid, dd.username);
 
                             Intent intent = new Intent(Login1Activity.this, UserMActivity.class);
                             startActivity(intent);

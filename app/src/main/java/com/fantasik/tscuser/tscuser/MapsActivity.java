@@ -69,6 +69,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.LOCATION_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
+import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class MapsActivity extends Fragment implements OnMapReadyCallback, LocationListener, GoogleMap.OnCameraMoveStartedListener,
@@ -335,7 +336,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
 
         Driverloc[] locs = null;
         RequestQueue requestQueue = Volley.newRequestQueue(this.getActivity());
-        String url = "http://10.0.2.2:8076/Service1.svc/GetNearbyDriverloc";
+        String url = Base_URL + "/GetNearbyDriverloc";
         final SharedPreferences editorread = this.getActivity().getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
 
         final JSONObject GH =new JSONObject();
