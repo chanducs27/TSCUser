@@ -32,7 +32,6 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".RegisterActivity"
-
             android:theme="@style/AppTheme" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -47,40 +46,41 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".UserMActivity"
-            />
+        <activity android:name=".UserMActivity" />
         <activity
             android:name=".MapConfirmActivity"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fantasik.tscuser.tscuser.UserMActivity" />
-            </activity>
+        </activity>
         <activity
             android:name=".ChangeCashTypeActivity"
-
             android:theme="@style/AppTheme" />
         <activity
             android:name=".PaymentModeActivity"
             android:theme="@style/AppTheme" />
-
         <activity
             android:name=".ArrivingDriverActivity"
-            android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.MapConfirmActivity" />
-    </activity>
-        <activity
-            android:name=".RateTripActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".FairEstimateActivity"  android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fantasik.tscuser.tscuser.MapConfirmActivity" />
-
         </activity>
+        <activity
+            android:name=".RateTripActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".FairEstimateActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.MapConfirmActivity" />
+        </activity>
+        <activity android:name=".ProfilePictureActivity"  android:theme="@style/AppTheme" ></activity>
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

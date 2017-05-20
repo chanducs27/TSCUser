@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
                     editor.putString("passw", tPass.getText().toString());
                     editor.apply();
 
-                    Intent intent = new Intent(RegisterActivity.this, PaymentModeActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, ProfilePictureActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 }

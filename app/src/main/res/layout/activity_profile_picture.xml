@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="Tap on the image below to change your profile picture"
+        android:textAlignment="center"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="14sp" />
+
+
+    <ImageButton
+        android:id="@+id/quick_start_cropped_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp"
+        android:background="@android:color/white"
+        android:scaleType="fitXY"
+        android:src="@drawable/profile" />
+
+
+    <Button
+        android:id="@+id/butNext"
+        style="@android:style/Widget.Material.Button"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#45494a"
+        android:elevation="2dp"
+        android:text="NEXT"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textStyle="normal|bold"
+        tools:targetApi="lollipop" />
+
+</RelativeLayout>
