@@ -141,7 +141,7 @@ public class PaymentModeActivity extends AppCompatActivity {
                     public void onResponse(String response)
                     {
                         pd.dismiss();
-                        if(response != null && !response.equals("-1")) {
+                        if(response != null && !response.substring(1,response.length()- 1).equals("-1")) {
                             userid = response;
 
                             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();

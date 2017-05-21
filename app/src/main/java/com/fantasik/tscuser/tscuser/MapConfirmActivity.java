@@ -292,6 +292,11 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                             intent.putExtra("dname", dd.name);
                             intent.putExtra("vehdetails", GetVehicleTypeName(dd.vehtypeid) + "-" + dd.vehbrand + "-" + dd.vehcolor + "-" + dd.vehplateno);
                             intent.putExtra("rideid", prefs.getString("rideid", ""));
+                            intent.putExtra("imgdriver", dd.imgdriver);
+                            intent.putExtra("fare", String.valueOf(totalcost));
+                            intent.putExtra("promocode", String.valueOf(promocode));
+                            intent.putExtra("distance", String.valueOf(totaldist));
+                            intent.putExtra("mode", String.valueOf(mode));
                             startActivity(intent);
                             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 

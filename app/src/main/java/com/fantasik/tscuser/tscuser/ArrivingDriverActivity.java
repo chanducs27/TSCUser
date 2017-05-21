@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -18,9 +19,9 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -49,8 +50,10 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
+import static com.fantasik.tscuser.tscuser.Util.Utils.GetVehicleTypeName;
 
 public class ArrivingDriverActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     GoogleMap googleMap;
@@ -58,8 +61,7 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
     Handler handlerDriverLocation;
     Handler handlerDriverStart;
     String driverid, rideid, vehdetials;
-    @BindView(R.id.imgDriver)
-    ImageView imgDriver;
+
     @BindView(R.id.txtDriverName)
     TextView txtDriverName;
     @BindView(R.id.ratDriver)
@@ -78,6 +80,8 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
     Button btnCancelBooking;
     @BindView(R.id.reldriver)
     RelativeLayout reldriver;
+    @BindView(R.id.imgdriver)
+    CircleImageView imgdriver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +106,16 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
         txtDriverName.setText(getIntent().getStringExtra("dname"));
         vehdetials = getIntent().getStringExtra("vehdetails");
         txtCarInfo.setText(vehdetials);
+
+        String img2driver = getIntent().getStringExtra("imgdriver");
+        if (img2driver != null) {
+            byte[] img = Base64.decode(img2driver,  Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+            imgdriver.setImageBitmap(bitmap);
+
+        }
+
+
     }
 
     private final int FIVE_SECONDS = 5000;
@@ -144,7 +158,7 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
             @Override
             public void onResponse(String response) {
 
-                if (response == "true") {
+                if (response.substring(1,response.length()- 1).equals("true")) {
                     final ProgressDialog pd = new ProgressDialog(ArrivingDriverActivity.this);
                     pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                     pd.setMessage("Your ride is started..");
@@ -159,6 +173,15 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
                     }
                     pd.dismiss();
                     Intent intent = new Intent(ArrivingDriverActivity.this, RateTripActivity.class);
+                    intent.putExtra("driverid", driverid);
+                    intent.putExtra("rideid", rideid);
+                    intent.putExtra("dname",getIntent().getStringExtra("dname"));
+                    intent.putExtra("vehdetails",vehdetials);
+                    intent.putExtra("imgdriver", getIntent().getStringExtra("imgdriver"));
+                    intent.putExtra("fare", getIntent().getStringExtra("fare"));
+                    intent.putExtra("promocode", getIntent().getStringExtra("promocode"));
+                    intent.putExtra("distance", getIntent().getStringExtra("distance"));
+                    intent.putExtra("mode", getIntent().getStringExtra("mode"));
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                 }

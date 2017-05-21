@@ -28,13 +28,13 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <ImageView
-                android:id="@+id/imgDriver"
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/imgdriver"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="15dp"
                 android:layout_weight=".8"
-                android:padding="10dp"
-                app:srcCompat="@drawable/driverimage" />
+                android:src="@drawable/driverimage" />
 
             <TableLayout
                 android:layout_width="0dp"
