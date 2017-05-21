@@ -223,7 +223,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             String address = "";
                address += addresses.get(0).getAddressLine(0);
             if(addresses.get(0).getMaxAddressLineIndex() > 1)
-            {
+            { address ="";
                 for (int i = 0; i <= 1; i++) {
                     address += addresses.get(0).getAddressLine(i) + " ";
                 }

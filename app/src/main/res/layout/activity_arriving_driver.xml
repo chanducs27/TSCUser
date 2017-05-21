@@ -45,16 +45,24 @@
                 <TableRow
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
                     android:gravity="left|center_vertical">
 
-                    <TextView
-                        android:id="@+id/txtDriverName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Driver Name"
-                        android:textAlignment="center" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/txtDriverName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Driver Name"
+                            android:textAlignment="viewStart" />
+                    </LinearLayout>
+
                 </TableRow>
 
                 <TableRow
@@ -91,13 +99,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:gravity="center_vertical">
+                    android:gravity="top|center_vertical">
 
                     <TextView
                         android:id="@+id/txtCarInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
                         android:text="Toyota" />
                 </TableRow>
 
@@ -145,7 +152,8 @@
             android:layout_height="30dp"
             android:layout_below="@+id/lnrdriver"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/txtDriverLocationAddress"
@@ -164,11 +172,13 @@
             <Button
                 android:id="@+id/btnCancelBooking"
                 style="@android:style/Widget.Material.Button"
-                android:layout_width="325dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/cardView"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="#45494a"
                 android:elevation="2dp"
                 android:text="CANCEL BOOKING"
