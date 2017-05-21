@@ -1,11 +1,16 @@
 package com.fantasik.tscuser.tscuser;
 
 import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +26,7 @@ import com.fantasik.tscuser.tscuser.Util.SessionManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
+import static com.fantasik.tscuser.tscuser.MapsActivity.alert;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
 public class UserMActivity extends AppCompatActivity
@@ -36,6 +42,30 @@ public class UserMActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("TSCCAB");
+
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if(!locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {
+            // show alert dialog if Internet is not connected
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setMessage(
+                    "Please activate location service GPS in location settings")
+                    .setTitle("Alert")
+                    .setCancelable(false)
+                    .setPositiveButton("Settings",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent = new Intent(
+                                            Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                    startActivity(intent);
+                                    alert.dismiss();
+                                }
+                            });
+            alert = builder.create();
+            alert.show();
+        }
 
         session = new SessionManager(getApplicationContext());
 

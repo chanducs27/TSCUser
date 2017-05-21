@@ -1,8 +1,14 @@
 package com.fantasik.tscuser.tscuser;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import static com.fantasik.tscuser.tscuser.MapsActivity.alert;
 
 public class SplashActivity extends AppCompatActivity {
 

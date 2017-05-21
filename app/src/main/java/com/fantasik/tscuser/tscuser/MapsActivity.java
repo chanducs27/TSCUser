@@ -2,6 +2,7 @@ package com.fantasik.tscuser.tscuser;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -302,6 +304,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             startlocpopup.setVisibility(View.VISIBLE);
             LocationManager locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
             Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
             String bestProvider = locationManager.getBestProvider(criteria, true);
             Location location = locationManager.getLastKnownLocation(bestProvider);
             if (location != null) {
@@ -309,34 +312,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
             }
             locationManager.requestLocationUpdates(bestProvider, 5000, 0, this);
 
-            if(!locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER))
-            {
-                // show alert dialog if Internet is not connected
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                builder.setMessage(
-                        "Please activate location service GPS in location settings")
-                        .setTitle("Alert")
-                        .setCancelable(false)
-                        .setPositiveButton("Settings",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Intent intent = new Intent(
-                                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                                        startActivity(intent);
-                                        alert.dismiss();
-                                    }
-                                })
-                        .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        alert.dismiss();
-                                    }
-                                });
-                alert = builder.create();
-                alert.show();
-            }
         }
     }
 
