@@ -147,14 +147,6 @@
         android:elevation="5dp"
         android:gravity="center_horizontal">
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_centerInParent="false"
-            android:layout_marginTop="230dp"
-            android:elevation="9dp"
-            app:srcCompat="@drawable/map_marker" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -194,6 +186,20 @@
                 app:srcCompat="@drawable/right_arrow_small" />
         </LinearLayout>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_centerInParent="false"
+            android:elevation="9dp"
+            app:srcCompat="@drawable/map_marker" />
     </RelativeLayout>
 
 
