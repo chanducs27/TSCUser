@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +62,16 @@ public class Login1Activity extends AppCompatActivity {
 
         // Session class instance
         session = new SessionManager(getApplicationContext());
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return(super.onOptionsItemSelected(item));
     }
 
     @OnClick({R.id.glogin, R.id.flogin, R.id.butNext})

@@ -7,8 +7,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -66,7 +68,7 @@ public class RateTripActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rate_trip);
         ButterKnife.bind(this);
         sd = new SessionManager(getApplicationContext());
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         txtFare.setText(getIntent().getStringExtra("fare") + " $");
         txtDistance.setText(getIntent().getStringExtra("distance") + " Km");
 
@@ -88,6 +90,17 @@ public class RateTripActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return(super.onOptionsItemSelected(item));
+    }
+
 
     @OnClick({R.id.btnhelp, R.id.btnrate})
     public void onViewClicked(View view) {

@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -40,6 +42,7 @@ public class ProfilePictureActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setTitle("Profile Picture");
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_profile_picture);
         ButterKnife.bind(this);
 
@@ -59,7 +62,16 @@ public class ProfilePictureActivity extends AppCompatActivity {
         editor.putString("profileimage", Base64.encodeToString(profileimage, Base64.DEFAULT));
         editor.apply();
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
+        return(super.onOptionsItemSelected(item));
+    }
 
     public void onSelectImageClick(View view) {
         CropImage.startPickImageActivity(this);

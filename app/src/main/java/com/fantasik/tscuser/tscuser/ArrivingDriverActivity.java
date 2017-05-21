@@ -17,9 +17,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NavUtils;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -117,7 +119,16 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
 
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
 
+        return(super.onOptionsItemSelected(item));
+    }
     private final int FIVE_SECONDS = 5000;
 
     public void scheduleGetDriverLocation() {
