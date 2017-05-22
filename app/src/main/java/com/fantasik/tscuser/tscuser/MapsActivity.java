@@ -55,6 +55,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONException;
@@ -199,6 +200,9 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         }
     }
 
+    Marker mr = null;
+
+    LatLng oldloc, newloc;
     // GPS location change event
     @Override
     public void onLocationChanged(Location location) {
@@ -207,7 +211,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Locati
         double longitude = location.getLongitude();
         LatLng latLng = new LatLng(latitude, longitude);
         if (!isPickupSelected) {
-            googleMap.addMarker(new MarkerOptions().position(latLng));
+
+           // googleMap.addMarker(new MarkerOptions().position(latLng));
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
 
