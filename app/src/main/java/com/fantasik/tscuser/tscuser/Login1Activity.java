@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Patterns;
 import android.view.MenuItem;
@@ -70,7 +69,7 @@ public class Login1Activity extends AppCompatActivity {
             // Session class instance
             session = new SessionManager(getApplicationContext());
 
-            awesomeValidation.addValidation(this, R.id.txtusername, "[a-zA-Z0-9_-]+", R.string.usernameerror);
+            awesomeValidation.addValidation(this, R.id.txtusername, Patterns.EMAIL_ADDRESS, R.string.usernameerror);
             awesomeValidation.addValidation(this, R.id.tPass, "[a-zA-Z0-9_-]+", R.string.passerror);
         }
         catch (Exception ex) {

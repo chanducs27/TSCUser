@@ -3,15 +3,16 @@ package com.fantasik.tscuser.tscuser;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.fantasik.tscuser.tscuser.Util.SPreferences;
 
 import butterknife.BindView;
@@ -38,7 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText tPass;
     @BindView(R.id.butNext)
     Button butNext;
-
+    private AwesomeValidation awesomeValidation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +48,12 @@ public class RegisterActivity extends AppCompatActivity {
         SPreferences.ClearPreferences(this);
         setTitle("Register");
          getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+
+        awesomeValidation.addValidation(this, R.id.tPass, "[a-zA-Z0-9_-]+", R.string.passerror);
+        awesomeValidation.addValidation(this, R.id.tFname, "[a-zA-Z-]+", R.string.nameerror);
+        awesomeValidation.addValidation(this, R.id.tEmail, Patterns.EMAIL_ADDRESS, R.string.emailerror);
+        awesomeValidation.addValidation(this, R.id.tphone, Patterns.PHONE, R.string.mobileerror);
     }
 
     @Override
@@ -90,22 +97,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private boolean isValidText() {
-        if(tFname.getText().toString().trim().equals("")) {
-            tFname.setError("This shouldn't be empty");
-            return  false;
-        }
-        if(tEmail.getText().toString().trim().equals("")) {
-            tEmail.setError("This shouldn't be empty");
-            return  false;
-        }
-        if(tPass.getText().toString().trim().equals("")) {
-            tPass.setError("This shouldn't be empty");
-            return  false;
-        }
-        if(tphone.getText().toString().trim().equals("")) {
-            tphone.setError("This shouldn't be empty");
-            return  false;
-        }
-        return true;
+
+        return awesomeValidation.validate();
     }
 }
