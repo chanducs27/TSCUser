@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,6 +22,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.fantasik.tscuser.tscuser.Util.GsonRequest;
 import com.fantasik.tscuser.tscuser.Util.SPreferences;
 import com.fantasik.tscuser.tscuser.Util.SessionManager;
@@ -50,19 +53,30 @@ public class Login1Activity extends AppCompatActivity {
     Button butNext;
     @BindView(R.id.txtForgetPass)
     TextView txtForgetPass;
-
+    //defining AwesomeValidation object
+    private AwesomeValidation awesomeValidation;
     SessionManager session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTitle("Login");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login1);
-        ButterKnife.bind(this);
-        SPreferences.ClearPreferences(this);
 
-        // Session class instance
-        session = new SessionManager(getApplicationContext());
+        try {
+            setTitle("Login");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_login1);
+            ButterKnife.bind(this);
+            SPreferences.ClearPreferences(this);
+            awesomeValidation = new AwesomeValidation(ValidationStyle.BASIC);
+            // Session class instance
+            session = new SessionManager(getApplicationContext());
+
+            awesomeValidation.addValidation(this, R.id.txtusername, "[a-zA-Z0-9_-]+", R.string.usernameerror);
+            awesomeValidation.addValidation(this, R.id.tPass, "[a-zA-Z0-9_-]+", R.string.passerror);
+        }
+        catch (Exception ex) {
+            Toast.makeText(Login1Activity.this, "Login failed.", Toast.LENGTH_LONG).show();
+        }
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -83,68 +97,67 @@ public class Login1Activity extends AppCompatActivity {
             case R.id.flogin:
                 break;
             case R.id.butNext:
-                final ProgressDialog pd = new ProgressDialog(Login1Activity.this);
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                pd.setMessage("Loading.........");
-                pd.setCancelable(false);
-                pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD4D9D0")));
-                pd.setIndeterminate(true);
-                pd.show();
+                if (awesomeValidation.validate()) {
+                    final ProgressDialog pd = new ProgressDialog(Login1Activity.this);
+                    pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    pd.setMessage("Loading.........");
+                    pd.setCancelable(false);
+                    pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD4D9D0")));
+                    pd.setIndeterminate(true);
+                    pd.show();
 
-                RequestQueue requestQueue = Volley.newRequestQueue(this);
-                String url = Base_URL + "/userlogin";
-                final JSONObject GH =new JSONObject();
-                try {
-                    GH.put("username",txtusername.getText());
-                    GH.put("pass",tPass.getText());
+                    RequestQueue requestQueue = Volley.newRequestQueue(this);
+                    String url = Base_URL + "/userlogin";
+                    final JSONObject GH = new JSONObject();
+                    try {
+                        GH.put("username", txtusername.getText());
+                        GH.put("pass", tPass.getText());
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                GsonRequest<UserDetails> getRequest = new GsonRequest<UserDetails>(Request.Method.POST, url,UserDetails.class, null, new Response.Listener<UserDetails>() {
-                    @Override
-                    public void onResponse(UserDetails response)
-                    {
-                        pd.dismiss();
-                        if(response != null) {
-                            UserDetails dd = response;
+                    GsonRequest<UserDetails> getRequest = new GsonRequest<UserDetails>(Request.Method.POST, url, UserDetails.class, null, new Response.Listener<UserDetails>() {
+                        @Override
+                        public void onResponse(UserDetails response) {
+                            pd.dismiss();
+                            if (response != null) {
+                                UserDetails dd = response;
 
 
+                                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("userid", dd.userid);
+                                editor.putString("mobile", dd.mobile);
+                                editor.putString("name", dd.name);
+                                editor.putString("username", String.valueOf(txtusername.getText()));
+                                editor.putString("pass", String.valueOf(tPass.getText()));
+
+                                editor.apply();
+
+                                session.createLoginSession(dd.userid, dd.username);
+
+                                Intent intent = new Intent(Login1Activity.this, UserMActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                            } else {
+                                Toast.makeText(Login1Activity.this, "Wrong credentials.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }, new com.android.volley.Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            pd.dismiss();
+                            Toast.makeText(Login1Activity.this, "Login failed.", Toast.LENGTH_LONG).show();
                             SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                            editor.putString("userid", dd.userid);
-                            editor.putString("mobile", dd.mobile);
-                            editor.putString("name", dd.name);
-                            editor.putString("username", String.valueOf(txtusername.getText()));
-                            editor.putString("pass", String.valueOf(tPass.getText()));
+                            editor.clear();
 
                             editor.apply();
-
-                            session.createLoginSession(dd.userid, dd.username);
-
-                            Intent intent = new Intent(Login1Activity.this, UserMActivity.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
                         }
-                        else
-                        {
-                            Toast.makeText(Login1Activity.this, "Login failed.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                }, new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        pd.dismiss();
-                        Toast.makeText(Login1Activity.this, "Login failed.", Toast.LENGTH_LONG).show();
-                        SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                        editor.clear();
+                    }, GH);
 
-                        editor.apply();
-                    }
-                }, GH);
-
-                getRequest.setShouldCache(false);
-                requestQueue.add(getRequest);
+                    getRequest.setShouldCache(false);
+                    requestQueue.add(getRequest);
+                }
                 break;
         }
     }

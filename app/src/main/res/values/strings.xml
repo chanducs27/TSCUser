@@ -23,4 +23,13 @@
     <string name="title_activity_places_auto_complete">PlacesAutoCompleteActivity</string>
     <string name="lightgraycolor">#f4f4f4</string>
     <string name="title_activity_change_cash_type">ChangeCashTypeActivity</string>
+    <string name="usernameerror">Enter a valid username</string>
+    <string name="passerror">Enter a valid password</string>
+
+
+    <string name="nameerror">Enter a valid name</string>
+    <string name="emailerror">Enter a valid email</string>
+    <string name="mobileerror">Enter a valid mobile</string>
+    <string name="dateerror">Enter a valid date</string>
+    <string name="ageerror">Enter a valid age</string>
 </resources>
