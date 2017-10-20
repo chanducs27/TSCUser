@@ -4,23 +4,23 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.app.Fragment;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AlertDialog;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fantasik.tscuser.tscuser.Util.SessionManager;
@@ -82,6 +82,14 @@ public class UserMActivity extends AppCompatActivity
         View header=navigationView.getHeaderView(0);
         TextView name = (TextView)header.findViewById(R.id.txtUsername);
         name.setText(prefs.getString("name", ""));
+        ImageView sdf = (ImageView)header.findViewById(R.id.imgUser);
+        String img2driver = prefs.getString("profileimage", null);
+        if (img2driver != null) {
+            byte[] img = Base64.decode(img2driver,  Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+            sdf.setImageBitmap(bitmap);
+
+        }
 
         fm = getFragmentManager();
         navigationView.getMenu().getItem(0).setChecked(true);

@@ -4,16 +4,11 @@ package com.fantasik.tscuser.tscuser.Util;
  * Created by a on 17-May-17.
  */
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.fantasik.tscuser.tscuser.Login1Activity;
-import com.fantasik.tscuser.tscuser.R;
-import com.fantasik.tscuser.tscuser.UserMActivity;
 import com.fantasik.tscuser.tscuser.WelcomeActivity;
 
 public class SessionManager {
@@ -36,7 +31,7 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
 
     // User name (make variable public to access from outside)
-    public static final String KEY_ID = "-1";
+    public static final String KEY_ID = "userid";
 
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
@@ -51,7 +46,7 @@ public class SessionManager {
     /**
      * Create login session
      * */
-    public void createLoginSession(String userid, String email){
+    public void createLoginSession(String userid,String name, String username, String mobile, String pass, String image){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -59,7 +54,11 @@ public class SessionManager {
         editor.putString(KEY_ID, userid);
 
         // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
+        editor.putString(KEY_EMAIL, username);
+        editor.putString("name", name);
+        editor.putString("mobile", mobile);
+        editor.putString("pass", pass);
+        editor.putString("image", image);
 
         // commit changes
         editor.commit();
@@ -92,13 +91,17 @@ public class SessionManager {
     /**
      * Get stored session data
      * */
-    public HashMap<String, String> getUserDetails(){
-        HashMap<String, String> user = new HashMap<String, String>();
+    public UserDetails getUserDetails(){
+        UserDetails user = new UserDetails();
         // user name
-        user.put(KEY_ID, pref.getString(KEY_ID, null));
+        user.userid = pref.getString(KEY_ID, null);
 
         // user email id
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+        user.username =pref.getString(KEY_EMAIL, null);
+        user.name =pref.getString("name", null);
+        user.mobile =pref.getString("mobile", null);
+        user.pass =pref.getString("pass", null);
+        user.imguser =pref.getString("image", null);
 
         // return user
         return user;

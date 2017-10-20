@@ -133,7 +133,7 @@ public class Login1Activity extends AppCompatActivity {
 
                                 editor.apply();
 
-                                session.createLoginSession(dd.userid, dd.username);
+                                session.createLoginSession(dd.userid,dd.name, dd.username,dd.mobile,dd.pass,dd.imguser);
 
                                 Intent intent = new Intent(Login1Activity.this, UserMActivity.class);
                                 startActivity(intent);

@@ -1,13 +1,11 @@
 package com.fantasik.tscuser.tscuser;
 
-import android.app.DownloadManager;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.MenuItem;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -157,7 +154,7 @@ public class PaymentModeActivity extends AppCompatActivity {
 
                             editor.apply();
 
-                            session.createLoginSession(userid, editorread.getString("email", ""));
+                            session.createLoginSession(userid,editorread.getString("fname", "") + editorread.getString("lname", ""), editorread.getString("email", ""),editorread.getString("phone", ""),editorread.getString("passw", ""),editorread.getString("profileimage", ""));
 
                             Intent intent = new Intent(PaymentModeActivity.this, UserMActivity.class);
                             startActivity(intent);

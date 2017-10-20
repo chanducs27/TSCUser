@@ -2,14 +2,10 @@ package com.fantasik.tscuser.tscuser;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -108,7 +104,7 @@ public class RateTripActivity extends AppCompatActivity {
             case R.id.btnhelp:
                 break;
             case R.id.btnrate:
-             String userid =   sd.getUserDetails().get(SessionManager.KEY_ID);
+             String userid =   sd.getUserDetails().userid;
                 RequestQueue requestQueue = Volley.newRequestQueue(this);
                 String url = Base_URL + "/RatingbyUser";
                 final JSONObject GH = new JSONObject();

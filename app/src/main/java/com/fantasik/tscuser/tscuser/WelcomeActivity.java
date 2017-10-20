@@ -1,15 +1,11 @@
 package com.fantasik.tscuser.tscuser;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -33,7 +29,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.fantasik.tscuser.tscuser.MapsActivity.alert;
 import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
@@ -79,7 +74,7 @@ public class WelcomeActivity extends AppCompatActivity {
         String url = Base_URL + "/GetUserDetailsById";
         final JSONObject GH =new JSONObject();
         try {
-            GH.put("userid",session.getUserDetails().get(SessionManager.KEY_ID));
+            GH.put("userid",session.getUserDetails().userid);
 
         } catch (JSONException e) {
             e.printStackTrace();
