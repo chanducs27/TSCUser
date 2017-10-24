@@ -10,7 +10,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -216,7 +215,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                             editor.apply();
                             pdWaitingdriver = new ProgressDialog(MapConfirmActivity.this);
                             pdWaitingdriver.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                            pdWaitingdriver.setMessage("Waiting for driver Conftimation....");
+                            pdWaitingdriver.setMessage("Waiting for driver Confirmation....");
                             pdWaitingdriver.setCancelable(false);
                             pdWaitingdriver.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFD4D9D0")));
                             pdWaitingdriver.setIndeterminate(true);

@@ -17,7 +17,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -55,7 +54,6 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
-import static com.fantasik.tscuser.tscuser.Util.Utils.GetVehicleTypeName;
 
 public class ArrivingDriverActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
     GoogleMap googleMap;
@@ -97,8 +95,6 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
         handlerDriverLocation = new Handler();
         handlerDriverStart = new Handler();
 
-        //       scheduleGetDriverLocation();
-        //     scheduleCheckDriverStartConfirm ();
 
 
         startlat = Double.parseDouble(getIntent().getStringExtra("startlat"));
@@ -106,6 +102,7 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
         driverid = getIntent().getStringExtra("driverid");
         rideid = getIntent().getStringExtra("rideid");
         txtDriverName.setText(getIntent().getStringExtra("dname"));
+        
         vehdetials = getIntent().getStringExtra("vehdetails");
         txtCarInfo.setText(vehdetials);
 
@@ -117,6 +114,8 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
 
         }
 
+        GetDriverLocation();
+        CheckDriverStartConfirm ();
 
     }
     @Override
@@ -129,7 +128,7 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
 
         return(super.onOptionsItemSelected(item));
     }
-    private final int FIVE_SECONDS = 5000;
+    private final int FIVE_SECONDS = 8000;
 
     public void scheduleGetDriverLocation() {
         handlerDriverLocation.postDelayed(new Runnable() {
