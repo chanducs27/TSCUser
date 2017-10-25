@@ -290,7 +290,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                             intent.putExtra("driverid", dd.driverid);
                             intent.putExtra("dmobile", dd.mobile);
                             intent.putExtra("dname", dd.name);
-                            intent.putExtra("vehdetails", GetVehicleTypeName(dd.vehtypeid) + "-" + dd.vehbrand + "-" + dd.vehcolor + "-" + dd.vehplateno);
+                            intent.putExtra("vehdetails", GetVehicleTypeName(dd.vehtypeid) + " - " + dd.vehbrand + " - " + dd.vehcolor + " - " + dd.vehplateno);
                             intent.putExtra("rideid", prefs.getString("rideid", ""));
                             intent.putExtra("imgdriver", dd.imgdriver);
                             intent.putExtra("fare", String.valueOf(totalcost));

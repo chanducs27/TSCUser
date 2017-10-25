@@ -28,7 +28,7 @@
             android:orientation="horizontal"
             android:weightSum="3">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imgdriver"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
