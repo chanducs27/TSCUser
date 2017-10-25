@@ -113,9 +113,10 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
             imgdriver.setImageBitmap(bitmap);
 
         }
-
+        ratDriver.setRating(Float.parseFloat(getIntent().getStringExtra("rate")));
+        txtRatingSr.setText(getIntent().getStringExtra("rate"));
         GetDriverLocation();
-        CheckDriverStartConfirm ();
+        CheckDriverCompletedConfirm ();
 
     }
     @Override
@@ -141,10 +142,10 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
 
     private final int TEN_SECONDS = 10000;
 
-    public void scheduleCheckDriverStartConfirm() {
+    public void scheduleCheckDriverCompleteConfirm() {
         handlerDriverStart.postDelayed(new Runnable() {
             public void run() {
-                CheckDriverStartConfirm();          // this method will contain your almost-finished HTTP calls
+                CheckDriverCompletedConfirm();          // this method will contain your almost-finished HTTP calls
                 handlerDriverStart.postDelayed(this, TEN_SECONDS);
             }
 
@@ -152,10 +153,10 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
     }
 
 
-    private void CheckDriverStartConfirm() {
+    private void CheckDriverCompletedConfirm() {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = Base_URL + "/IsRideStartedbyDriver";
+        String url = Base_URL + "/IsRideCompletedbyDriver";
         final JSONObject GH = new JSONObject();
         try {
             GH.put("rideid", rideid);
@@ -318,7 +319,7 @@ public class ArrivingDriverActivity extends AppCompatActivity implements OnMapRe
     @Override
     protected void onResume() {
         scheduleGetDriverLocation();
-        scheduleCheckDriverStartConfirm();
+        scheduleCheckDriverCompleteConfirm();
         super.onResume();
     }
 

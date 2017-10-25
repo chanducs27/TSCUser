@@ -297,6 +297,7 @@ public class MapConfirmActivity extends AppCompatActivity implements OnMapReadyC
                             intent.putExtra("promocode", String.valueOf(promocode));
                             intent.putExtra("distance", String.valueOf(totaldist));
                             intent.putExtra("mode", String.valueOf(mode));
+                            intent.putExtra("rate", dd.rate);
                             startActivity(intent);
                             overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
