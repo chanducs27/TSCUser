@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fantasik.tscuser.tscuser.Util.SessionManager;
+import com.fantasik.tscuser.tscuser.Util.UserDetails;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -68,6 +69,7 @@ public class UserMActivity extends AppCompatActivity
         }
 
         session = new SessionManager(getApplicationContext());
+        UserDetails ud = session.getUserDetails();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -81,9 +83,9 @@ public class UserMActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header=navigationView.getHeaderView(0);
         TextView name = (TextView)header.findViewById(R.id.txtUsername);
-        name.setText(prefs.getString("name", ""));
+        name.setText(ud.name);
         ImageView sdf = (ImageView)header.findViewById(R.id.imgUser);
-        String img2driver = prefs.getString("profileimage", null);
+        String img2driver = ud.imguser;
         if (img2driver != null) {
             byte[] img = Base64.decode(img2driver,  Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
@@ -91,6 +93,19 @@ public class UserMActivity extends AppCompatActivity
 
         }
 
+        TextView edit2 = (TextView)header.findViewById(R.id.txteditprofile);
+        edit2.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserMActivity.this, EditProfileActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+                // request your webservice here. Possible use of AsyncTask and ProgressDialog
+                // show the result here - dialog or Toast
+            }
+
+        });
         fm = getFragmentManager();
         navigationView.getMenu().getItem(0).setChecked(true);
         if(checkPlayServices()) {

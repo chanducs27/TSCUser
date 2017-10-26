@@ -26,24 +26,24 @@
         <activity android:name=".WelcomeActivity" />
         <activity
             android:name=".Login1Activity"
-            android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.WelcomeActivity" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.WelcomeActivity" />
         </activity>
         <activity
             android:name=".ForgetPassActivity"
-            android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.Login1Activity" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.Login1Activity" />
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.WelcomeActivity" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.WelcomeActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -71,10 +71,10 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".PaymentModeActivity"
-            android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.ProfilePictureActivity" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.ProfilePictureActivity" />
         </activity>
         <activity
             android:name=".ArrivingDriverActivity"
@@ -85,10 +85,10 @@
         </activity>
         <activity
             android:name=".RateTripActivity"
-            android:theme="@style/AppTheme" >
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.UserMActivity" />
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.UserMActivity" />
         </activity>
         <activity
             android:name=".FairEstimateActivity"
@@ -97,11 +97,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.fantasik.tscuser.tscuser.MapConfirmActivity" />
         </activity>
-        <activity android:name=".ProfilePictureActivity"  android:theme="@style/AppTheme" ><meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value="com.fantasik.tscuser.tscuser.RegisterActivity" /></activity>
+        <activity
+            android:name=".ProfilePictureActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.fantasik.tscuser.tscuser.RegisterActivity" />
+        </activity>
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
+        <activity android:name=".EditProfileActivity" android:theme="@style/AppTheme"> <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.fantasik.tscuser.tscuser.UserMActivity" />
+        </activity>
     </application>
+
 </manifest>

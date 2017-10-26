@@ -96,6 +96,8 @@ public class WelcomeActivity extends AppCompatActivity {
 
                     editor.apply();
 
+                    session.createLoginSession(dd.userid,dd.name, dd.username,dd.mobile,dd.pass,dd.imguser);
+
                     Intent intent = new Intent(WelcomeActivity.this, UserMActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
