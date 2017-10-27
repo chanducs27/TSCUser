@@ -20,13 +20,14 @@ import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fantasik.tscuser.tscuser.Util.SessionManager;
 import com.fantasik.tscuser.tscuser.Util.UserDetails;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.fantasik.tscuser.tscuser.MapsActivity.alert;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
@@ -84,7 +85,7 @@ public class UserMActivity extends AppCompatActivity
         View header=navigationView.getHeaderView(0);
         TextView name = (TextView)header.findViewById(R.id.txtUsername);
         name.setText(ud.name);
-        ImageView sdf = (ImageView)header.findViewById(R.id.imgUser);
+        CircleImageView sdf = (CircleImageView)header.findViewById(R.id.imgUser);
         String img2driver = ud.imguser;
         if (img2driver != null) {
             byte[] img = Base64.decode(img2driver,  Base64.DEFAULT);
