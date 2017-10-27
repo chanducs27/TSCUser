@@ -5,11 +5,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +53,15 @@ public class ProfilePictureActivity extends AppCompatActivity {
             }
         });
 
+        SharedPreferences prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        String dgdfg = prefs.getString("profileimage", null);
+
+        if(dgdfg != null) {
+            byte[] img = Base64.decode(dgdfg,  Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+            quickStartCroppedImage.setImageBitmap(bitmap);
+
+        }
         Bitmap bitmap = ((BitmapDrawable) quickStartCroppedImage.getDrawable()).getBitmap();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);

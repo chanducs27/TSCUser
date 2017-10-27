@@ -7,12 +7,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +23,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.fantasik.tscuser.tscuser.Util.GsonRequest;
 import com.fantasik.tscuser.tscuser.Util.SPreferences;
 import com.fantasik.tscuser.tscuser.Util.SessionManager;
@@ -31,6 +39,8 @@ import com.fantasik.tscuser.tscuser.Util.UserDetails;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,12 +48,13 @@ import butterknife.OnClick;
 import static com.fantasik.tscuser.tscuser.Util.Utils.Base_URL;
 import static com.fantasik.tscuser.tscuser.Util.Utils.MY_PREFS_NAME;
 
+
 public class Login1Activity extends AppCompatActivity {
 
-    @BindView(R.id.glogin)
-    ImageButton glogin;
+ //   @BindView(R.id.glogin)
+ //   ImageButton glogin;
     @BindView(R.id.flogin)
-    ImageButton flogin;
+    LoginButton flogin;
     @BindView(R.id.txtusername)
     EditText txtusername;
     @BindView(R.id.tPass)
@@ -55,6 +66,8 @@ public class Login1Activity extends AppCompatActivity {
     //defining AwesomeValidation object
     private AwesomeValidation awesomeValidation;
     SessionManager session;
+    CallbackManager callbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -71,12 +84,95 @@ public class Login1Activity extends AppCompatActivity {
 
             awesomeValidation.addValidation(this, R.id.txtusername, Patterns.EMAIL_ADDRESS, R.string.usernameerror);
             awesomeValidation.addValidation(this, R.id.tPass, "[a-zA-Z0-9_-]+", R.string.passerror);
+
+            //Facebook
+            //check if already logged in, go to main activity
+            CheckFacebookLogin();
+
+            callbackManager = CallbackManager.Factory.create();
+            flogin.setReadPermissions(Arrays.asList(
+                    "public_profile", "email"));
+            flogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    // App code
+                    // App code
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    Log.v("LoginActivity", response.toString());
+
+                                    // Application code
+                                    try {
+                                        String email = object.getString("email");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    // 01/31/1980 format
+                                }
+                            });
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "name,email");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+
+
+                }
+
+                @Override
+                public void onCancel() {
+                    // App code
+                }
+
+                @Override
+                public void onError(FacebookException exception) {
+                    // App code
+                }
+
+
+            });
         }
         catch (Exception ex) {
             Toast.makeText(Login1Activity.this, "Login failed.", Toast.LENGTH_LONG).show();
         }
 
     }
+
+    private void CheckFacebookLogin() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if(accessToken != null) {
+            GraphRequest request = GraphRequest.newMeRequest(
+                    accessToken,
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            Log.v("LoginActivity", response.toString());
+
+                            // Application code
+                            try {
+                                String email = object.getString("email");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            // 01/31/1980 format
+                        }
+                    });
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "name,email");
+            request.setParameters(parameters);
+            request.executeAsync();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -88,11 +184,11 @@ public class Login1Activity extends AppCompatActivity {
         return(super.onOptionsItemSelected(item));
     }
 
-    @OnClick({R.id.glogin, R.id.flogin, R.id.butNext})
+    @OnClick({ R.id.flogin, R.id.butNext})   //add glogin here if added
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.glogin:
-                break;
+          //  case R.id.glogin:
+          //      break;
             case R.id.flogin:
                 break;
             case R.id.butNext:

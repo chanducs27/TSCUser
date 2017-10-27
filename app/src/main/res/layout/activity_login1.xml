@@ -24,24 +24,31 @@
             android:layout_height="0dp"
             android:gravity="center_vertical">
 
-            <ImageButton
-                android:id="@+id/glogin"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight=".5"
-                android:background="@android:color/background_light"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/gplus" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
-            <ImageButton
-                android:id="@+id/flogin"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_weight="0.5"
-                android:background="@android:color/background_light"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/facebook" />
+                <com.facebook.login.widget.LoginButton
+                    android:id="@+id/flogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+
+                    />
+
+       <!--         <ImageButton
+                    android:id="@+id/glogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight=".5"
+                    android:background="@android:color/background_light"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/gplus" />-->
+            </RelativeLayout>
+
+
         </TableRow>
 
         <TableRow

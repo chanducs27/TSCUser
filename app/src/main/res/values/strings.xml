@@ -32,4 +32,8 @@
     <string name="mobileerror">Enter a valid mobile</string>
     <string name="dateerror">Enter a valid date</string>
     <string name="ageerror">Enter a valid age</string>
+
+    <string name="facebook_app_id">158584774742192</string>
+    <string name="fb_login_protocol_scheme">fb158584774742192</string>
+
 </resources>
