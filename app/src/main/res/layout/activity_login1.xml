@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="80dp"
 
-                    />
+                    android:visibility="gone" />
 
        <!--         <ImageButton
                     android:id="@+id/glogin"
@@ -56,13 +56,14 @@
             android:layout_height="match_parent">
 
             <ImageButton
-                android:layout_width="wrap_content"
-                app:srcCompat="@drawable/or"
                 android:id="@+id/imageButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
                 android:background="@android:color/background_light"
                 android:scaleType="fitXY"
-                android:layout_height="40dp"
-                android:layout_marginTop="10dp" />
+                android:visibility="gone"
+                app:srcCompat="@drawable/or" />
         </TableRow>
 
         <TableRow
@@ -75,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
-                android:layout_weight=".5"
+                android:layout_weight="1"
                 android:ems="10"
                 android:hint="USERNAME"
                 android:inputType="text" />
@@ -90,40 +91,41 @@
 
 
             <EditText
+                android:id="@+id/tPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:id="@+id/tPass"
-                android:hint="PASSWORD"
                 android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="PASSWORD"
+                android:inputType="textPassword" />
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:gravity="bottom"
-            android:minHeight="220dp">
+            android:gravity="center"
+            android:minHeight="86dp">
 
 
             <Button
-                android:text="LOGIN"
-                android:layout_width="wrap_content"
                 android:id="@+id/butNext"
+                style="@android:style/Widget.Material.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
                 android:background="#45494a"
+                android:elevation="2dp"
+                android:text="LOGIN"
+                android:textAlignment="center"
                 android:textColor="@android:color/background_light"
                 android:textStyle="normal|bold"
-                android:textAlignment="center"
-                android:elevation="2dp"
-                style="@android:style/Widget.Material.Button"
-                android:layout_height="40dp"
                 tools:targetApi="lollipop" />
 
         </TableRow>
 
         <TableRow
             android:layout_width="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="top|center"
             android:minHeight="220dp">
 
             <TextView
